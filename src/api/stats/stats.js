@@ -3,6 +3,6 @@ module.exports.node_env = function() {
   return process.env.NODE_ENV;
 };
 
-module.exports.node_port = function() {
-  return process.env.PORT;
+module.exports.name = function() {
+  return process.env.name;
 };

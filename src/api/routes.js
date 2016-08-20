@@ -9,8 +9,8 @@ module.exports = (function() {
 
     router.get('/stats', function(req, res) {
       res.json({
-        node_env: stats.node_env(),
-        node_port: stats.node_port()
+        name: stats.name(),
+        node_env: stats.node_env()
       });
     });
 
