@@ -1,0 +1,26 @@
+{
+	"resources": [
+		{
+			"id": "_auto",
+			"name": "string",
+			"planets": [],
+			"itemId": "string"
+		}
+	],
+	"refined": [
+		{
+			"id": "_auto",
+			"name": "string",
+			"input1": "resourceId",
+			"input2": "resourceId",
+			"use": "string",
+			"component": "string",
+			"itemId": "string"
+		}
+	],
+	"specialized": [
+		{
+			"id": "_auto"
+		}
+	]
+}

@@ -1,0 +1,33 @@
+{
+  "name": "pi-calc",
+  "version": "0.1.0",
+  "description": "PI Material Calculator",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "grunt",
+    "pm2-start": "pm2 start process.yml"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/Drethic/eve-pi-calc.git"
+  },
+  "author": "Drethic",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Drethic/eve-pi-calc/issues"
+  },
+  "homepage": "https://github.com/Drethic/eve-pi-calc#readme",
+  "dependencies": {
+    "async": "^2.0.0-rc.6",
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.15.1",
+    "bower": "^1.7.9",
+    "express": "^4.13.4",
+    "grunt": "^1.0.1",
+    "grunt-bower-task": "^0.4.0",
+    "mongodb": "^2.1.18",
+    "mongoose": "^4.4.20"
+  },
+  "devDependencies": {}
+}
