@@ -8,7 +8,7 @@ module.exports = (function() {
     });
 
     router.get('/stats', function(req, res) {
-      res.json({ node_env: stats.node_env });
+      res.json({ node_env: stats.node_env() });
     });
 
     return router;
