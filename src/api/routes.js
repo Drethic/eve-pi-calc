@@ -8,7 +8,10 @@ module.exports = (function() {
     });
 
     router.get('/stats', function(req, res) {
-      res.json({ node_env: stats.node_env() });
+      res.json({
+        node_env: stats.node_env(),
+        node_port: stats.port()
+      });
     });
 
     return router;
