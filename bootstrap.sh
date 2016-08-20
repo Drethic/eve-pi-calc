@@ -24,7 +24,13 @@ sudo npm install -g grunt-cli
 sudo npm install -g pm2
 
 # Install git so grunt command will work
-sudo apt-get install -y git
+sudo apt-get install -y git nginx
+
+# Install Jenkins
+wget -q -O - https://pkg.jenkins.io/debian/jenkins-ci.org.key | sudo apt-key add -
+sudo sh -c 'echo deb http://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'
+sudo apt-get -y update
+sudo apt-get install -y jenkins
 
 # Do initial Grunt of the project
 su -c "cd /opt/${PROJECTFOLDER} && npm install && node db/seeds/dev.js && npm run pm2-start" vagrant
