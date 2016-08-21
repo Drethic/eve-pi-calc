@@ -1,3 +1,4 @@
+'use strict';
 var https = require('https');
 var fs = require('fs');
 var crest = 'crest-tq.eveonline.com';
@@ -220,7 +221,29 @@ function listEvePiMarketGroups() {
     });
 }
 
-cacheEveMarketGroups();
-cacheEveRawPlanetMap();
-cacheEveItems();
-setTimeout(listEvePiMarketGroups, 2000);
+var yaml = require('js-yaml');
+
+function readCategoryIDs() {
+    try {
+        var doc = yaml.safeLoad(fs.readFileSync('./sde/fsd/categoryIDs.yaml', 'utf8'));
+        console.log(doc);
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+function readTypeIDs() {
+    try {
+        var doc = yaml.safeLoad(fs.readFileSync('./sde/fsd/typeIDs.yaml', 'utf8'));
+        console.log(doc);
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+// readCategoryIDs();
+readTypeIDs();
+// cacheEveMarketGroups();
+// cacheEveRawPlanetMap();
+// cacheEveItems();
+// setTimeout(listEvePiMarketGroups, 2000);
