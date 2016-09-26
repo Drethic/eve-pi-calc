@@ -2,6 +2,7 @@
 var https = require('https');
 var fs = require('fs');
 var crest = 'crest-tq.eveonline.com';
+var _ = require('lodash');
 
 var itemCache = [];
 var marketGroups = {};
@@ -147,6 +148,8 @@ function getPiSubMarketGroups(group, callback) {
 }
 
 function listEvePiMarketGroups() {
+    var marketResponse;
+    var piItems;
     // var rawMaterial = [
     //     "Aqueous Liquids",
     //     "Autotrophs",
@@ -175,50 +178,59 @@ function listEvePiMarketGroups() {
     // console.log(rawMatTypeId);
     // fs.writeFile('./item-cache.json', JSON.stringify(itemCache, null, 4), 'utf-8');
     // fs.writeFile('./market-groups-cache.json', JSON.stringify(marketGroups, null, 4), 'utf-8');
-    getEveMarketGroupByName('Planetary Materials', function(error, response) {
+    var getPlanetaryMaterials = function(error, response) {
         if (error) {
             console.log('Error: ', error);
         }
-        getPiSubMarketGroups(response, function(piError, piItems) {
-            if (piError) {
-                console.log('getPiSubMarketGroups Error: ', piError);
+        marketResponse = response;
+        getPiSubMarketGroups(response, getPiSubMarketGroupsCallback);
+    };
+
+    var getPiSubMarketGroupsCallback = function(piError, piResponse) {
+        if (piError) {
+            console.log('getPiSubMarketGroups Error: ', piError);
+        }
+        console.log({piError: piError});
+        piItems = piResponse;
+        getEveMarketParentGroupById(marketResponse.id, getMargetParentGroupId);
+    };
+
+    var getMargetParentGroupId = function(error, response) {
+        if (error) {
+            console.log('GroupById Error: ', error);
+        }
+        console.log('Planetary Materials');
+        for (var i = 0; i < response.length; i++) {
+            var r0 = false;
+            if (response[i].name === 'Raw Planetary Materials') {
+                r0 = true;
             }
-            getEveMarketParentGroupById(response.id, function(err, res) {
-                if (err) {
-                    console.log('GroupById Error: ', err);
-                }
-                console.log('Planetary Materials');
-                for (var i = 0; i < res.length; i++) {
-                    var r0 = false;
-                    if (res[i].name === 'Raw Planetary Materials') {
-                        r0 = true;
-                    }
-                    console.log('- ' + res[i].name + ' (P' + i + ')');
-                    for (var j = 0; j < piItems.length; j++) {
-                        if (res[i].id === piItems[j].marketGroup.id) {
-                            console.log('--', piItems[j].type.name);
-                            if (r0) {
-                                for (var rawMat = 0; rawMat < rawPlanetMap.length; rawMat++) {
-                                    if (rawPlanetMap[rawMat].typeID === piItems[j].type.id) {
-                                        for (var rawPlanets = 0; rawPlanets < rawPlanetMap[rawMat].planets.length; rawPlanets++) {
-                                            for (var planetName = 0; planetName < itemCache.length; planetName++) {
-                                                if (itemCache[planetName].id === rawPlanetMap[rawMat].planets[rawPlanets]) {
-                                                    console.log('---' + itemCache[planetName].name);
-                                                }
-                                            }
+            console.log('- ' + response[i].name + ' (P' + i + ')');
+            for (var j = 0; j < piItems.length; j++) {
+                if (response[i].id === piItems[j].marketGroup.id) {
+                    console.log('--', piItems[j].type.name);
+                    if (r0) {
+                        for (var rawMat = 0; rawMat < rawPlanetMap.length; rawMat++) {
+                            if (rawPlanetMap[rawMat].typeID === piItems[j].type.id) {
+                                for (var rawPlanets = 0; rawPlanets < rawPlanetMap[rawMat].planets.length; rawPlanets++) {
+                                    for (var planetName = 0; planetName < itemCache.length; planetName++) {
+                                        if (itemCache[planetName].id === rawPlanetMap[rawMat].planets[rawPlanets]) {
+                                            console.log('---' + itemCache[planetName].name);
                                         }
                                     }
                                 }
                             }
-                            // getEveCrest(piItems[j].type.href.replace('https://' + crest, ''), function(descErr, descRes) {
-                            //     console.log('---' + descRes.description);
-                            // });
                         }
                     }
+                    // getEveCrest(piItems[j].type.href.replace('https://' + crest, ''), function(descErr, descRes) {
+                    //     console.log('---' + descRes.description);
+                    // });
                 }
-            });
-        });
-    });
+            }
+        }
+    };
+
+    getEveMarketGroupByName('Planetary Materials', getPlanetaryMaterials);
 }
 
 var yaml = require('js-yaml');
@@ -242,8 +254,8 @@ function readTypeIDs() {
 }
 
 // readCategoryIDs();
-readTypeIDs();
-// cacheEveMarketGroups();
-// cacheEveRawPlanetMap();
-// cacheEveItems();
-// setTimeout(listEvePiMarketGroups, 2000);
+// readTypeIDs();
+cacheEveMarketGroups();
+cacheEveRawPlanetMap();
+cacheEveItems();
+setTimeout(listEvePiMarketGroups, 2000);

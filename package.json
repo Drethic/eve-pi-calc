@@ -28,6 +28,7 @@
     "grunt": "^1.0.1",
     "grunt-bower-task": "^0.4.0",
     "js-yaml": "^3.6.1",
+    "lodash": "^4.16.1",
     "mongodb": "^2.1.18",
     "mongoose": "^4.4.20"
   },
